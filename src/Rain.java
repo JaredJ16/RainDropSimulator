@@ -1,13 +1,12 @@
 import java.util.ArrayList;
 
-
 /*
 The Rain class contains all of the RainDrops in
 an ArrayList.
 */
 public class Rain {
 	
-	//to be changed to correct data structure(quaderny tree?)\ change back to private
+	//to be changed to a better data structure(quaternary tree?)
 	private ArrayList<RainDrop> rainDrops;
 	
 	public Rain() {

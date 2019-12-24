@@ -3,13 +3,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.animation.AnimationTimer;
 
-
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.Ellipse;
-
-import javafx.scene.shape.Rectangle;
-//get rid of expirement and drawExpirement and all not needed imports
-
+//import java.util.ArrayList;
+import javafx.geometry.Point2D;
 /*
 The WindowVisual class represents an object that updates the
 state of the rain and displays the rain.
@@ -49,7 +44,7 @@ public class WindowVisual {
 	}
 	
 	private void clearCanvas() {
-		canvasContext.setFill(Color.WHITE);
+		canvasContext.setFill(Color.GHOSTWHITE);
 		canvasContext.fillRect(0, 0, CANVAS_LENGTH, CANVAS_LENGTH);
 	}
 	
@@ -58,9 +53,26 @@ public class WindowVisual {
 			rain.getRainDrops().get(i).drawDropOnCanvas(canvasContext);
 		}
 	}
-	
+///////////////////////
+//This method is very useful to see why certain drops are colliding, keep for now, and delete it when not needed later
+/*	public void drawNodes(Point2D[] nodes) {
+		for (int i = 0; i < 9; i++) {
+			canvasContext.setFill(Color.RED);
+			canvasContext.fillRect(nodes[i].getX(), nodes[i].getY(), 1.0, 1.0);
+		}
+	}*/
+//////////////////////	
 	private void updateRain() {
 		addRainDrops();
+		//this method will change once the data structure of the raindrops is changed, so that
+		//checking for collisions is not so intensive and much more locally done.
+		for (int i = 0; i < rain.getRainDrops().size(); i++) {
+			for (int j = 0; j < rain.getRainDrops().size(); j++) {
+				if (i != j) {
+					rain.getRainDrops().get(i).intersectsWith(rain.getRainDrops().get(j));
+				}
+			}
+		}
 		//rain.mergeIntersectingRainDrops();
 		//change velocity/position of raindrops
 	}

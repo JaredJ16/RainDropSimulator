@@ -1,4 +1,3 @@
-
 /*
 The settings class is a helper class that contains many state
 variables of the simulation that the user can modify in the
