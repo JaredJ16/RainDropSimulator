@@ -6,14 +6,15 @@ current:
 	-basic physics
 	-basic settings/current focus issue in settings
 finalizing:
+	-comment a lot better and make screen shots/videos
 	-fix event handling so that it is all uniform
 	-check all modfiers/names
 	-check style
 	-reorganize method location
 	-color switches for canvas (make everything the same)
 	-verify ellipse functions and organization (RainDrop Methods)
+	-I might want to make a more lightweight coordinate class instead of Point2D
 */
-
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -160,7 +161,6 @@ public class RainDropSimulator extends Application {
 			}
 		});
 	}
-
 
 	private void addSceneSwitchingEventHandlers(Stage primaryStage) {
         toSettingsSceneImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {

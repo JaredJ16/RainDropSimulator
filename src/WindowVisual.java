@@ -73,12 +73,11 @@ public class WindowVisual {
 				}
 			}
 		}
-		//rain.mergeIntersectingRainDrops();
-		//change velocity/position of raindrops
+		//merging/velocties/other changes/physics
 	}
     
 	private void addRainDrops() {
-		if((rain.getRainDrops().size() < Settings.getRainDropLimit()) && ((int)(Math.random() * Settings.getRainRate()) == 0)) {
+		if((rain.getRainDrops().size() <= Settings.getRainDropLimit()) && ((int)(Math.random() * Settings.getRainRate()) == 0)) {
 			rain.addRainDrop();
 		}
 	}

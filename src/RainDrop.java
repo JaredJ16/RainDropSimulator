@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 /*
 The RainDrop class is a child of the Ellipse JavaFX
 class and has certain methods that allow it to work
-nicely with the canvas.
+with the canvas.
 */
 public class RainDrop extends Ellipse {
 	
@@ -15,7 +15,8 @@ public class RainDrop extends Ellipse {
 	private static final int LOWER_RADIUS_BOUND = 7;
 	private static final int UPPER_RADIUS_BOUND = 13;
 	
-	//These help with placing the ellipses and note that they might be rounded up at times.
+	//These help with placing the ellipses and note that 
+	//this radius amount includes the center pixel of the ellipse
 	private int halfRadiusX;
 	private int halfRadiusY;
 
@@ -35,7 +36,7 @@ public class RainDrop extends Ellipse {
 	
 	private void orientEllipseCorrectly() {
 		// The rain drop radius amounts can only be odd becuase
-		// dealing with odd and even radii results in unnessecary complications.
+		// dealing with odd and even radii results in unnessecary complicated cases.
 		int xRadius = LOWER_RADIUS_BOUND + 2 * inclusiveRandInt(0, (UPPER_RADIUS_BOUND - LOWER_RADIUS_BOUND) / 2);
 		int yRadius = LOWER_RADIUS_BOUND + 2 * inclusiveRandInt(0, (UPPER_RADIUS_BOUND - LOWER_RADIUS_BOUND) / 2);
 		
@@ -48,6 +49,7 @@ public class RainDrop extends Ellipse {
 
 		setRadiusX(xRadius);
 		setRadiusY(yRadius);
+		//setHalfRadius method?
 		halfRadiusX = (int)Math.ceil(xRadius / 2.0);
 		halfRadiusY = (int)Math.ceil(yRadius / 2.0);
 	}
@@ -118,6 +120,7 @@ public class RainDrop extends Ellipse {
 			ellipseValue = (int)ellipseValue - 1;
 			ellipseValue /= 100;
 			if (ellipseValue <= 1.15) {
+				//delete these fill changes later, as of now, they just show what drops are colliding
 				targetDrop.setFill(Color.RED);
 				this.setFill(Color.RED);
 				return true;
