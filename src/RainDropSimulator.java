@@ -4,7 +4,9 @@ current:
 	-merge detection/method
 	-structuring of raindrops
 	-basic physics
-	-basic settings/current focus issue in settings
+	-basic settings
+	- stackoverflow: JAVAFX event triggered when selecting a check box
+	-fix css slider styling issue(improper stylesheets?)
 finalizing:
 	-comment a lot better and make screen shots/videos
 	-fix event handling so that it is all uniform
@@ -14,6 +16,7 @@ finalizing:
 	-color switches for canvas (make everything the same)
 	-verify ellipse functions and organization (RainDrop Methods)
 	-I might want to make a more lightweight coordinate class instead of Point2D
+	-fxml?
 */
 
 import javafx.application.Application;
@@ -21,6 +24,7 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Slider;
+import javafx.scene.control.CheckBox;
 import javafx.scene.text.Text;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -56,19 +60,20 @@ public class RainDropSimulator extends Application {
 
 	private Scene rainScene;
 	private StackPane rainRoot;
-	private	ImageView toSettingsSceneImage;
 	private Image stopImage;
 	private Image startImage;
+	private	ImageView toSettingsSceneImage;
 	private ImageView startStopButton;
 	private WindowVisual windowVisual;
 	
 	private Scene settingsScene;
 	private StackPane settingsRoot;
-	private VBox rainRateBox;
+	private VBox allSettingsBox;
 
 	private	ImageView toRainSceneImage;
 	private Slider rainRateSlider;
 	private Text rainRateText;
+	private CheckBox fillScreenBox;
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -78,8 +83,8 @@ public class RainDropSimulator extends Application {
 	public void start(Stage primaryStage) {
 		initializeRoots();
 
+		addKeyboardEvents(primaryStage);
 		addSceneSwitchingEventHandlers(primaryStage);
-		addKeyEvents(primaryStage);
 		addStartAndStopButtonEventHandlers();
 		
 		setStageProperties(primaryStage);
@@ -95,44 +100,45 @@ public class RainDropSimulator extends Application {
 
 		//Settings Scene nodes
 		toRainSceneImage = new ImageView(new Image(RAIN_IMAGE_PATH));
+		fillScreenBox = new CheckBox("Fill Screen");
+
 		rainRateSlider = new Slider(1,5,3);//possibly change to final vars
+		//the reason why this cannot be in the css file is due to some obscure bug that
+		//only shows the slider on the first scene switch
+		rainRateSlider.setShowTickMarks(true);
+		rainRateSlider.setShowTickLabels(true);
+		rainRateSlider.setSnapToTicks(true);
+		rainRateSlider.setMajorTickUnit(1);
+		rainRateSlider.setMinorTickCount(0);
+		rainRateSlider.setMaxWidth(100);
 		rainRateText = new Text("Rate of Rain");
 
-		rainRateSlider.setMajorTickUnit(1);
-		rainRateSlider.setBlockIncrement(1);
-		rainRateSlider.setMinorTickCount(0);
-		rainRateSlider.setSnapToTicks(true);
-		rainRateSlider.setShowTickLabels(true);
-		rainRateSlider.setShowTickMarks(true);
-		rainRateSlider.setMaxWidth(100);
-		
 		//initialize the roots and scenes
 		rainRoot = new StackPane();
 		settingsRoot = new StackPane();
 		rainScene = new Scene(rainRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
 		settingsScene = new Scene(settingsRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-
+		
 		//organize nodes into panes
-		rainRateBox = new VBox(rainRateText, rainRateSlider);
+		//for the sake of making things work, reorganize the panes later and keep stuff in VBox for now
+		allSettingsBox = new VBox(rainRateText, rainRateSlider, fillScreenBox);
 
-		//style the nodes and add them to the roots
+		//add nodes to roots and align them
 		rainRoot.getChildren().addAll(windowVisual.getCanvas(), toSettingsSceneImage, startStopButton);
-		settingsRoot.getChildren().addAll(toRainSceneImage, rainRateBox);
-		styleNodesOfRainRoot();
-		styleNodesOfSettingsRoot();
-	}
-	
-	private void styleNodesOfRainRoot() {
+		settingsRoot.getChildren().addAll(allSettingsBox, toRainSceneImage);
+		
 		rainRoot.setAlignment(windowVisual.getCanvas(), Pos.TOP_CENTER);
 		rainRoot.setAlignment(toSettingsSceneImage, Pos.BOTTOM_CENTER);
 		rainRoot.setAlignment(startStopButton, Pos.BOTTOM_RIGHT);
-	}
-	
-	private void styleNodesOfSettingsRoot() {
 		settingsRoot.setAlignment(toRainSceneImage, Pos.BOTTOM_CENTER);
+
+		//add stylesheets
+		settingsScene.getStylesheets().add(getClass().getResource("/settingsStyle.css").toExternalForm());
+
 	}
+
 //event handling///////////////////////////////////////////////////////////////////////////////////	
-	private void addKeyEvents(Stage primaryStage) {
+	private void addKeyboardEvents(Stage primaryStage) {
 
 		//switch scenes when the s key is pressed or
 		//toggle the rain starting/stopping when enter is pressed.
@@ -163,15 +169,14 @@ public class RainDropSimulator extends Application {
 	}
 
 	private void addSceneSwitchingEventHandlers(Stage primaryStage) {
-        toSettingsSceneImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+		toSettingsSceneImage.setOnMouseClicked( e -> {
 			windowVisual.stopAnimation();
 			startStopButton.setImage(startImage);
 			primaryStage.setScene(settingsScene);
-        });
-        
-        toRainSceneImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+		});
+        toRainSceneImage.setOnMouseClicked( e -> {
 			primaryStage.setScene(rainScene);
-        });
+		});
 	}
 	
 	private void addStartAndStopButtonEventHandlers() {
