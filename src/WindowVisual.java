@@ -53,27 +53,9 @@ public class WindowVisual {
 			rain.getRainDrops().get(i).drawDropOnCanvas(canvasContext);
 		}
 	}
-///////////////////////
-//This method is very useful to see why certain drops are colliding, keep for now, and delete it when not needed later
-/*	public void drawNodes(Point2D[] nodes) {
-		for (int i = 0; i < 9; i++) {
-			canvasContext.setFill(Color.RED);
-			canvasContext.fillRect(nodes[i].getX(), nodes[i].getY(), 1.0, 1.0);
-		}
-	}*/
-//////////////////////	
 	private void updateRain() {
 		addRainDrops();
-		//this method will change once the data structure of the raindrops is changed, so that
-		//checking for collisions is not so intensive and much more locally done.
-		for (int i = 0; i < rain.getRainDrops().size(); i++) {
-			for (int j = 0; j < rain.getRainDrops().size(); j++) {
-				if (i != j) {
-					rain.getRainDrops().get(i).intersectsWith(rain.getRainDrops().get(j));
-				}
-			}
-		}
-		//merging/velocties/other changes/physics
+		//more to be added
 	}
     
 	private void addRainDrops() {

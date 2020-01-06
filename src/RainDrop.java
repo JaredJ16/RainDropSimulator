@@ -75,17 +75,6 @@ public class RainDrop extends Ellipse {
 		if ((int)distanceBetweenCenters > targetDropMaxHalfRadius + currentDropMaxHalfRadius + 2) {
 				return false;
 		} else {
-			//if needing an optimization, look towards this, but as of now, using all bounding nodes appears to work the best
-			/*if (this.getCenterY() > targetDrop.getCenterY()) {
-				intersecting = isNodeInTargetDrop(targetDrop, getTopNodes());
-				System.out.println("Using Top");
-			} else if (this.getCenterY() < targetDrop.getCenterY()) {
-				intersecting = isNodeInTargetDrop(targetDrop, getBottomNodes());
-				System.out.println("Using Bottom");
-			} else {
-				intersecting = isNodeInTargetDrop(targetDrop, getHorizontalAxisNodes());
-				System.out.println("Using Mid");
-			}*/
 			return isNodeInTargetDrop(targetDrop, getBoundingNodes());
 		}
 	}
